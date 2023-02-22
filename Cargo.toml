@@ -13,7 +13,7 @@ aws-sdk-route53 = "0.21.0"
 aws-sdk-sts = "0.21.0"
 aws-sdk-cloudfront = "0.21.0"
 aws-config = "0.51.0"
-tokio = {version = "1.22.0", features=["full"]}
+tokio = {version = "1.24.2", features=["full"]}
 thiserror = "1.0.37"
 futures = "0.3.25"
 mime_guess = "2.0.4"
