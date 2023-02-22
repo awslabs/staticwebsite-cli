@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Cloudformation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStack",
+        "cloudformation:UpdateStack",
+        "cloudformation:DescribeStacks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudfrontAndCertificates",
+      "Effect": "Allow",
+      "Action": [
+        "acm:RequestCertificate",
+        "acm:DescribeCertificate",
+        "cloudfront:TagResource",
+        "cloudfront:CreateDistribution",
+        "cloudfront:UpdateDistribution",
+        "cloudfront:GetDistribution",
+        "cloudfront:GetDistributionConfig",
+        "cloudfront:GetInvalidation",
+        "cloudfront:CreateInvalidation",
+        "cloudfront:GetOriginAccessControl",
+        "cloudfront:CreateCloudFrontOriginAccessIdentity",
+        "cloudfront:GetCloudFrontOriginAccessIdentityConfig",
+        "cloudfront:GetCloudFrontOriginAccessIdentity",
+        "cloudfront:CreateInvalidation",
+        "cloudfront:UpdateOriginAccessControl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListHostedZones",
+        "route53:ListHostedZonesByName",
+        "route53:ChangeResourceRecordSets",
+        "route53:GetHostedZone",
+        "route53:GetChange"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3WebsiteAndLoggingBucketAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutEncryptionConfiguration",
+        "s3:PutBucketLogging",
+        "s3:PutBucketAcl",
+        "s3:GetBucketAcl",
+        "s3:GetBucketPolicy",
+        "s3:CreateBucket",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "arn:aws:s3:::*"
+    }
+  ]
+}
