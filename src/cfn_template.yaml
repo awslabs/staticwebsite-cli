@@ -1,0 +1,146 @@
+Parameters:
+  HostedZoneId:
+    Description: "The ID of the hosted zone to deploy our endpoint into"
+    Type: "String"
+  DomainName:
+    Description: "The domain, within the zone, to deploy the website to"
+    Type: "String"
+
+Resources:
+  #
+  # Our website bucket
+  #
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      LoggingConfiguration:
+        LogFilePrefix: StaticWebsiteBucket/
+        DestinationBucketName: !Ref LoggingBucket
+
+  #
+  # Our website bucket policy
+  #
+  StaticWebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: WebsiteBucket
+      PolicyDocument:
+        Statement:
+          - Action: s3:GetObject
+            Effect: Allow
+            Principal:
+              CanonicalUser: !GetAtt StaticWebsiteOAI.S3CanonicalUserId
+            Resource: !Join
+              - ""
+              -  - !GetAtt WebsiteBucket.Arn
+                 - "/*"
+
+  #
+  # Our website's SSL certificate
+  #
+  StaticWebsiteCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+      ValidationMethod: DNS
+
+  #
+  # an OAI granting access from our distribution to
+  # the static website bucket
+  #
+  StaticWebsiteOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: Identity for make-me-static
+
+  #
+  # Our website's Cloudfront distribution
+  #
+  CloudfrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref DomainName
+        DefaultCacheBehavior:
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          Compress: true
+          TargetOriginId: WebsiteOrigin
+          ViewerProtocolPolicy: allow-all
+        DefaultRootObject: index.html
+        Enabled: true
+        HttpVersion: http2
+        IPV6Enabled: true
+        Logging:
+          Prefix: Cloudfront
+          Bucket:
+            Fn::GetAtt:
+              - LoggingBucket
+              - RegionalDomainName
+          IncludeCookies: false
+        Origins:
+          - DomainName:
+              Fn::GetAtt:
+                - WebsiteBucket
+                - RegionalDomainName
+            Id: WebsiteOrigin
+            S3OriginConfig:
+              OriginAccessIdentity:
+                !Join
+                  - ""
+                  - - origin-access-identity/cloudfront/
+                    - Ref: StaticWebsiteOAI
+        ViewerCertificate:
+          AcmCertificateArn:
+            Ref: StaticWebsiteCertificate
+          MinimumProtocolVersion: TLSv1.2_2019
+          SslSupportMethod: sni-only
+
+  #
+  # The access logging bucket for our cloudfront distribution
+  #
+  LoggingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: LogDeliveryWrite
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+    DeletionPolicy: Delete
+
+  #
+  # The DNS record pointing from our zone at the CDN
+  #
+  StaticWebsiteAliasRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: !Sub "${DomainName}."
+      Type: A
+      AliasTarget:
+        DNSName:
+          !GetAtt CloudfrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+      HostedZoneId: !Ref HostedZoneId
+
+Outputs:
+  StaticWebsiteCfnEndpoint:
+    Value:
+      !GetAtt CloudfrontDistribution.DomainName
+
+  StaticWebsiteBucket:
+    Value: !Ref WebsiteBucket
+
+  Distribution:
+    Value: !Ref CloudfrontDistribution
