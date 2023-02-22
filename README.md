@@ -42,7 +42,7 @@ INFO staticwebsite_cli: Checking AWS access
 INFO staticwebsite_cli: AWS access looks good, continuing
 INFO staticwebsite_cli: Found zone zone="ABCDEFG"
 INFO staticwebsite_cli: Using Cloudformation stack name="StaticSite--rustacean-demo-com"
-INFO staticwebsite_cli: Stack doesn't exist; creating
+INFO staticwebsite_cli: Stack doesnt exist; creating
 INFO staticwebsite_cli: Stack created stack_id="..."
 INFO staticwebsite_cli: Waiting for stack deployment to complete
 ...
