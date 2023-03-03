@@ -19,3 +19,7 @@ futures = "0.3.26"
 mime_guess = "2.0.4"
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
+
+# This is only here so we can match on byte-stream errors until this issue is closed
+# https://github.com/awslabs/aws-sdk-rust/issues/600
+aws-smithy-http = "0.54.4"

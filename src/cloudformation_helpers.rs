@@ -2,7 +2,6 @@ use crate::{Error, SdkError};
 use aws_sdk_cloudformation::error::{CreateStackError, UpdateStackError};
 use aws_sdk_cloudformation::model::{Parameter, StackStatus};
 use std::time::Duration;
-use aws_sdk_cloudformation::types::DisplayErrorContext;
 use tracing::{error, event, Level};
 
 ///
