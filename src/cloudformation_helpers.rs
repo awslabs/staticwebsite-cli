@@ -185,9 +185,8 @@ pub async fn update_stack(
     match update_stack_response {
         Ok(_) => Ok(()),
         Err(e) => {
-            // TODO - when the SDK supports parsing this out properly, do that, rather than string matching.
-            // https://github.com/awslabs/aws-sdk-rust/issues/678
-            return if e.to_string().contains("No updates are to be performed.") {
+            let error_txt = format!("{:?}", e);
+            return if error_txt.to_string().contains("No updates are to be performed.") {
                 Ok(())
             } else {
                 Err(e)
