@@ -76,7 +76,7 @@ pub enum Error {
     #[error("Upload stream error")]
     UploadStreamError {
         #[from]
-        source: aws_smithy_http::byte_stream::Error,
+        source: aws_smithy_http::byte_stream::error::Error,
     },
 
     #[error("Couldn't configure tracing provider")]

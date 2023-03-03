@@ -6,20 +6,16 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "4.0.19", features = ["derive"] }
-aws-sdk-s3 = "0.21.0"
-aws-sdk-cloudformation = "0.21.0"
-aws-sdk-route53 = "0.21.0"
-aws-sdk-sts = "0.21.0"
-aws-sdk-cloudfront = "0.21.0"
-aws-config = "0.51.0"
-tokio = {version = "1.22.0", features=["full"]}
-thiserror = "1.0.37"
-futures = "0.3.25"
+clap = { version = "4.1.8", features = ["derive"] }
+aws-sdk-s3 = "0.24.0"
+aws-sdk-cloudformation = "0.24.0"
+aws-sdk-route53 = "0.24.0"
+aws-sdk-sts = "0.24.0"
+aws-sdk-cloudfront = "0.24.0"
+aws-config = "0.54.1"
+tokio = {version = "1.26.0", features=["full"]}
+thiserror = "1.0.38"
+futures = "0.3.26"
 mime_guess = "2.0.4"
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"
-
-# This is only here so we can match on byte-stream errors until this issue is closed
-# https://github.com/awslabs/aws-sdk-rust/issues/600
-aws-smithy-http = "0.51.0"
