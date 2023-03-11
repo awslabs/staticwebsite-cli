@@ -25,6 +25,9 @@ You will need to either:
 * Setup a profile in your AWS credentials file
 * Setup environment variables `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` 
 
+## Download the CLI
+Grab the [latest release artifact](https://github.com/awslabs/staticwebsite-cli/releases/latest) for your system. Builds are published for Windows, Mac, and Linux. Alternatively, clone this repository and run `cargo build` 🙂!
+
 ## Usage
 Simply specify:
 ```
