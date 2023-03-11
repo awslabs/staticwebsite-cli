@@ -1,4 +1,5 @@
 # Static Website CLI
+![build](https://github.com/awslabs/staticwebsite-cli/actions/workflows/build.yaml/badge.svg?branch=main)
 
 This CLI tool makes it easy to deploy a static website to AWS. It builds and hosts the website, sets up a CDN and DNS,
 and provisions an SSL certificate.
