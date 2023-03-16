@@ -1576,6 +1576,7 @@ dependencies = [
  "aws-sdk-route53",
  "aws-sdk-s3",
  "aws-sdk-sts",
+ "aws-smithy-http",
  "clap",
  "futures",
  "mime_guess",
