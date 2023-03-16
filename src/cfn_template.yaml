@@ -8,7 +8,10 @@ Parameters:
 
 Resources:
   #
-  # Our website bucket
+  # Our website bucket. A single older version
+  # of each file will be kept, and any older
+  # versions will be deleted permanently after
+  # 30 days.
   #
   WebsiteBucket:
     Type: AWS::S3::Bucket
@@ -17,6 +20,13 @@ Resources:
     Properties:
       VersioningConfiguration:
         Status: "Enabled"
+      LifecycleConfiguration:
+        Rules:
+          - NoncurrentVersionExpiration:
+              NewerNoncurrentVersions: 1
+              NoncurrentDays: 30
+            Id: NoncurrentVersionExpiry
+            Status: Enabled
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -110,12 +120,25 @@ Resources:
           SslSupportMethod: sni-only
 
   #
-  # The access logging bucket for our cloudfront distribution
+  # The access logging bucket for our cloudfront distribution. Logs
+  # will be cleaned up after 90 days and non-ccurrent versions will
+  # be cleaned up after 30.
   #
   LoggingBucket:
     Type: AWS::S3::Bucket
     Properties:
       AccessControl: LogDeliveryWrite
+      VersioningConfiguration:
+        Status: "Enabled"
+      LifecycleConfiguration:
+        Rules:
+          - ExpirationInDays: 90
+            Status: Enabled
+            Id: ExpireLogsAfter90Days
+          - NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+            Status: Enabled
+            Id: ExpireNoncurrentVersions
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
