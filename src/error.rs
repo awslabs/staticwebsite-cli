@@ -1,9 +1,12 @@
-use crate::SdkError;
-use aws_sdk_cloudformation::error::{CreateStackError, DescribeStacksError, UpdateStackError};
-use aws_sdk_cloudfront::error::{CreateInvalidationError, GetInvalidationError};
-use aws_sdk_route53::error::ListHostedZonesByNameError;
-use aws_sdk_s3::error::PutObjectError;
-use aws_sdk_sts::error::GetCallerIdentityError;
+use aws_sdk_cloudformation::error::SdkError;
+use aws_sdk_cloudformation::operation::create_stack::CreateStackError;
+use aws_sdk_cloudformation::operation::describe_stacks::DescribeStacksError;
+use aws_sdk_cloudformation::operation::update_stack::UpdateStackError;
+use aws_sdk_cloudfront::operation::create_invalidation::CreateInvalidationError;
+use aws_sdk_cloudfront::operation::get_invalidation::GetInvalidationError;
+use aws_sdk_route53::operation::list_hosted_zones_by_name::ListHostedZonesByNameError;
+use aws_sdk_s3::operation::put_object::PutObjectError;
+use aws_sdk_sts::operation::get_caller_identity::GetCallerIdentityError;
 use tracing::dispatcher::SetGlobalDefaultError;
 
 #[derive(Debug, thiserror::Error)]
