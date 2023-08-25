@@ -7,7 +7,6 @@ mod s3_helpers;
 use crate::cloudfront_helpers::{invalidate_distribution, wait_for_invalidation};
 use crate::error::Error;
 use crate::s3_helpers::upload_directory;
-use aws_sdk_cloudformation::types::SdkError;
 use clap::Parser;
 use std::fs;
 use std::path::Path;

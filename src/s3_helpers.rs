@@ -1,9 +1,9 @@
 use crate::Error;
-use aws_sdk_s3::types::ByteStream;
 use aws_sdk_s3::Client;
 use mime_guess;
 use std::fs;
 use std::path::Path;
+use aws_smithy_http::byte_stream::ByteStream;
 use tracing::info;
 
 #[derive(Clone)]

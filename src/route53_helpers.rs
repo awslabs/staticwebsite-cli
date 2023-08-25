@@ -1,5 +1,5 @@
-use crate::SdkError;
-use aws_sdk_route53::error::ListHostedZonesByNameError;
+use aws_sdk_route53::error::SdkError;
+use aws_sdk_route53::operation::list_hosted_zones_by_name::ListHostedZonesByNameError;
 
 ///
 /// Finds the Zone ID for the given zone name.
