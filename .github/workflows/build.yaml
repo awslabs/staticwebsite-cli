@@ -16,8 +16,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: 1.72.0
       - uses: actions-rs/cargo@v1
         with:
           command: build
+          toolchain: 1.72.0
           args: --release --all-features

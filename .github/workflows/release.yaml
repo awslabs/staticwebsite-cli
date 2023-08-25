@@ -23,6 +23,7 @@ jobs:
       - name: Compile and release
         uses: rust-build/rust-build.action@v1.4.0
         env:
+          TOOLCHAIN_VERSION: 1.72.0
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           RUSTTARGET: ${{ matrix.target }}
