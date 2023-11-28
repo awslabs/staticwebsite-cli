@@ -27,7 +27,6 @@ pub async fn wait_for_stack(
             Ok(stacks) => {
                 let stack_status = stacks
                     .stacks()
-                    .expect("stack body should be present")
                     .first()
                     .expect("stack should be present")
                     .stack_status()
@@ -93,7 +92,6 @@ pub async fn stack_exists_and_is_complete(
             // update it.
             let stack = stacks
                 .stacks()
-                .expect("DescribeStacks for an existing stack should return the stack")
                 .first()
                 .expect("DescribeStacks with a response body should contain at least one stack");
             match stack.stack_status().unwrap() {
@@ -214,11 +212,9 @@ pub async fn get_stack_output(
 
     let outputs = describe_result
         .stacks()
-        .expect("DescribeStacks looking for a stack output should return a stack")
         .first()
         .expect("DescribeStacks looking for a stack output should contain a non-nullable stack")
-        .outputs()
-        .expect("DescribeStacks looking for a stack output for our stack should contain outputs");
+        .outputs();
 
     for o in outputs {
         if o.output_key().unwrap().eq(output_name) {

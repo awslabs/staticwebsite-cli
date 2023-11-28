@@ -22,12 +22,16 @@ pub async fn invalidate_distribution(
         .as_millis()
         .to_string();
 
-    let invalidation_paths = Paths::builder().items("/*").quantity(1).build();
+    let invalidation_paths = Paths::builder().items("/*")
+        .quantity(1)
+        .build()
+        .expect("Valid invalidation paths");
 
     let invalidation_batch = InvalidationBatch::builder()
         .caller_reference(now)
         .paths(invalidation_paths)
-        .build();
+        .build()
+        .expect("An invalidation batch");
 
     let invalidation = cf_client
         .create_invalidation()
@@ -40,7 +44,6 @@ pub async fn invalidate_distribution(
         .invalidation()
         .expect("invalidation body should be present")
         .id()
-        .expect("invalidation should have an ID")
         .to_string());
 }
 
@@ -65,8 +68,7 @@ pub async fn wait_for_invalidation(
         let status = invalidation_output
             .invalidation()
             .expect("invalidation body should be present")
-            .status()
-            .expect("invalidation should have a status");
+            .status();
 
         info!(status = status, "Invalidation");
 
