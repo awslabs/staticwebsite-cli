@@ -13,16 +13,14 @@ pub async fn find_zone(
         .dns_name(domain_zone)
         .send()
         .await?;
-    let zones = zones_response
+    let zone = zones_response
         .hosted_zones()
+        .first()
         .expect("A zone with this name exists");
 
     // Extract the zone ID portion
-    let zone_id_full = zones
-        .first()
-        .expect("We have a zone with this ID")
+    let zone_id_full = zone
         .id()
-        .expect("A zone has a zone ID")
         .to_string();
     let zone_id = zone_id_full.split("/");
     let zone_id_parts: Vec<&str> = zone_id.collect();

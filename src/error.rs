@@ -6,6 +6,7 @@ use aws_sdk_cloudfront::operation::create_invalidation::CreateInvalidationError;
 use aws_sdk_cloudfront::operation::get_invalidation::GetInvalidationError;
 use aws_sdk_route53::operation::list_hosted_zones_by_name::ListHostedZonesByNameError;
 use aws_sdk_s3::operation::put_object::PutObjectError;
+use aws_sdk_s3::primitives::ByteStreamError;
 use aws_sdk_sts::operation::get_caller_identity::GetCallerIdentityError;
 use tracing::dispatcher::SetGlobalDefaultError;
 
@@ -77,9 +78,9 @@ pub enum Error {
     /// Other errors
     ///
     #[error("Upload stream error")]
-    UploadStreamError {
+    ByteStreamError {
         #[from]
-        source: aws_smithy_http::byte_stream::error::Error,
+        source: ByteStreamError,
     },
 
     #[error("Couldn't configure tracing provider")]
