@@ -5,6 +5,7 @@ use aws_sdk_cloudformation::types::{Parameter, StackStatus};
 use std::time::Duration;
 use aws_sdk_cloudformation::error::SdkError;
 use tracing::{error, event, Level};
+use aws_sdk_cloudformation::error::ProvideErrorMetadata;
 
 ///
 /// Waits indefinitely for a stack to be complete - either following an update, or an
@@ -111,7 +112,9 @@ pub async fn stack_exists_and_is_complete(
             // TODO - clean this up, once the 'kind' on describe_stats structures the errors properly, rather
             // than just string matching
             // https://github.com/awslabs/aws-sdk-rust/issues/678
-            return if e.to_string().contains("does not exist") {
+            let svc_error = &e.message().expect("DescribeStacks contains an error message");
+
+            return if svc_error.contains("does not exist") {
                 Ok(false)
             } else {
                 Err(Error::DescribeStacksError { source: e })
@@ -185,7 +188,7 @@ pub async fn update_stack(
     match update_stack_response {
         Ok(_) => Ok(()),
         Err(e) => {
-            let error_txt = format!("{:?}", e);
+            let error_txt = format!("{:?}", e.message());
             return if error_txt.to_string().contains("No updates are to be performed.") {
                 Ok(())
             } else {
