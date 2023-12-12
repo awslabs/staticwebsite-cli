@@ -127,6 +127,7 @@ Resources:
   LoggingBucket:
     Type: AWS::S3::Bucket
     Properties:
+      AccessControl: LogDeliveryWrite
       VersioningConfiguration:
         Status: "Enabled"
       LifecycleConfiguration:
