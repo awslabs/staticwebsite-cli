@@ -127,7 +127,6 @@ Resources:
   LoggingBucket:
     Type: AWS::S3::Bucket
     Properties:
-      AccessControl: LogDeliveryWrite
       VersioningConfiguration:
         Status: "Enabled"
       LifecycleConfiguration:
@@ -143,7 +142,11 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerPreferred
     DeletionPolicy: Delete
+
 
   #
   # The DNS record pointing from our zone at the CDN
